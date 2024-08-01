@@ -43,8 +43,8 @@ export default function NavigationBar() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <div>LOGO</div>
-          <p className="font-bold text-inherit">ACME</p>
+          <div>FILLUP</div>
+          <p className="font-bold text-inherit">IO</p>
         </NavbarBrand>
       </NavbarContent>
 
