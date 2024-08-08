@@ -1,7 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const CreatorFormModel = new mongoose.Schema(
   {
+    isAcceptingResponses: {
+      type: Boolean,
+      default: true,
+    },
+    creatorId: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

@@ -10,9 +10,10 @@ import {
 } from "@nextui-org/react";
 
 import { Textarea } from "@nextui-org/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./form.css";
 import axios from "axios";
+import { currentUser } from "@clerk/nextjs/server";
 
 const CreatorForm = () => {
   const [form, setForm] = useState({
@@ -23,7 +24,7 @@ const CreatorForm = () => {
         type: "text",
         text: "Your question",
         options: [],
-        required: true,
+        isRequired: true,
       },
     ],
   });
@@ -32,7 +33,7 @@ const CreatorForm = () => {
     try {
       event.preventDefault();
       console.log("Sending...");
-      const response = await axios.post("/api/newform", form);
+      const response = await axios.post("/api/creatorform", form);
       console.log(response, "RESPONSE FORM BACKEND");
     } catch (error) {
       console.log(error, "ERRORORORORO");
@@ -44,7 +45,7 @@ const CreatorForm = () => {
       ...form,
       questions: [
         ...form.questions,
-        { type: "text", text: "New Question", options: [] },
+        { type: "text", text: "New Question", options: [], isRequired: true },
       ],
     });
   };
@@ -52,14 +53,14 @@ const CreatorForm = () => {
   const handleSwitchChange = (index, _bool) => {
     const newQuestions = form.questions.map((question, i) => {
       if (i === index) {
-        return { ...question, required: !_bool };
+        return { ...question, isRequired: !_bool };
       }
       return question;
     });
     setForm({ ...form, questions: newQuestions });
   };
 
-  const handleInputChange = (index, event) => {
+  const handleInputChange = (index: Number, event) => {
     const newQuestions = form.questions.map((question, i) => {
       if (i === index) {
         return { ...question, text: event.target.value };
@@ -100,10 +101,7 @@ const CreatorForm = () => {
       if (i === qIndex) {
         return {
           ...question,
-          options: [
-            ...question.options,
-            "Option " + (question.options.length + 1),
-          ],
+          options: [...question.options, "New Option"],
         };
       }
       return question;
@@ -119,7 +117,7 @@ const CreatorForm = () => {
   };
 
   return (
-    <div className="mainclass bg-white m-4  rounded-md max-w-[740px] min-w-72 md:w-full text-gray-900 overflow-auto p-4 ">
+    <div className="mainclass flex flex-col  min-w-[390px] justify-center rounded-md max-w-[740px]  md:w-full text-gray-900 p-2 bg-white ">
       <form action="" onSubmit={(event) => handleSendData(event)}>
         <div className=" rounded-lg">
           <div className="  p-1 mb-2 rounded-md">
@@ -146,7 +144,7 @@ const CreatorForm = () => {
               />
             </div>
           </div>
-          <div className="p-1   p-1 text-xs mb-2">
+          <div className="p-1 text-xs mb-2">
             {form.questions.map((question, qIndex) => (
               <div
                 key={qIndex}
@@ -210,7 +208,7 @@ const CreatorForm = () => {
                           File
                         </DropdownItem>
                         <DropdownItem key="radio" value="radio">
-                          options
+                          Radio
                         </DropdownItem>
                         <DropdownItem key="checkbox" value="checkbox">
                           checkbox
@@ -220,9 +218,9 @@ const CreatorForm = () => {
 
                     <Switch
                       defaultSelected
-                      isSelected={question.required}
+                      isSelected={question.isRequired}
                       onChange={(event) =>
-                        handleSwitchChange(qIndex, question.required)
+                        handleSwitchChange(qIndex, question.isRequired)
                       }
                       size="sm"
                     >
@@ -234,10 +232,16 @@ const CreatorForm = () => {
                   question.type === "checkbox") && (
                   <>
                     {question.options.map((option, oIndex) => (
-                      <li
+                      <div
                         key={oIndex}
-                        className="flex gap-2 items-start w-full mb-2 scale-[90%]"
+                        className="flex gap-2 scale-[95%] ml-[-8px]"
                       >
+                        <label
+                          htmlFor=""
+                          className="items-center justify-center pt-1.5 text-medium"
+                        >
+                          {oIndex + 1}
+                        </label>
                         <Input
                           size="sm"
                           isRequired={true}
@@ -268,10 +272,10 @@ const CreatorForm = () => {
                         >
                           remove
                         </Button>
-                      </li>
+                      </div>
                     ))}
                     <Button
-                      className="mt-1"
+                      className="mt-2"
                       color="primary"
                       variant="bordered"
                       size="sm"
@@ -299,10 +303,12 @@ const CreatorForm = () => {
         </div>
         <Button
           type="submit"
-          className=" w-full mb-3 p-1"
+          className="w-full  p-1"
           size="md"
           color="primary"
           variant="shadow"
+          onClick={handleSendData}
+          // isLoading={true}
         >
           Create Form
         </Button>

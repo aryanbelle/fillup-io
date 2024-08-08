@@ -12,7 +12,6 @@ import {
   Button,
 } from "@nextui-org/react";
 import {
-  UserProfile,
   SignInButton,
   SignOutButton,
   SignedOut,
@@ -43,8 +42,8 @@ export default function NavigationBar() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <div>FILLUP</div>
-          <p className="font-bold text-inherit">IO</p>
+          <div className="italic">FILLUP</div>
+          <p className="font-bold text-inherit italic">.io</p>
         </NavbarBrand>
       </NavbarContent>
 
@@ -55,8 +54,8 @@ export default function NavigationBar() {
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
+          <Link href="dashboard" aria-current="page">
+            Dashboard
           </Link>
         </NavbarItem>
         <NavbarItem>

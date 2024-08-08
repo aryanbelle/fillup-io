@@ -1,10 +1,4 @@
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 export default function RootLayout({
@@ -16,9 +10,7 @@ export default function RootLayout({
     <html lang="en">
       <NextUIProvider>
         <ClerkProvider>
-          <body>
-            {children}
-          </body>
+          <body>{children}</body>
         </ClerkProvider>
       </NextUIProvider>
     </html>
