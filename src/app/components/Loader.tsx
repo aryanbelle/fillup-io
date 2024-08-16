@@ -4,10 +4,10 @@ import { Progress } from "@nextui-org/react";
 export default function Loader() {
   return (
     <Progress
-      size="md"
+      size="sm"
       isIndeterminate
       aria-label="Loading..."
-      className="max-w-sm"
+      className="max-w-md"
     />
   );
 }

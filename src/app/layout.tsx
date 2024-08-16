@@ -1,6 +1,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
+import { Toaster } from "react-hot-toast";
 export default function RootLayout({
   children,
 }: {
@@ -10,7 +11,10 @@ export default function RootLayout({
     <html lang="en">
       <NextUIProvider>
         <ClerkProvider>
-          <body>{children}</body>
+          <body>
+            {children}
+            <Toaster position="top-center" />
+          </body>
         </ClerkProvider>
       </NextUIProvider>
     </html>

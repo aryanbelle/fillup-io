@@ -42,8 +42,10 @@ export default function NavigationBar() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <div className="italic">FILLUP</div>
-          <p className="font-bold text-inherit italic">.io</p>
+          <Link color="foreground" href="./">
+            <div className="italic">FILLUP</div>
+            <p className="font-bold text-inherit italic">.io</p>
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 
@@ -54,13 +56,13 @@ export default function NavigationBar() {
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link href="dashboard" aria-current="page">
+          <Link href="/dashboard" color="danger">
             Dashboard
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
+          <Link color="primary" href="./newform" aria-current="page">
+            new form
           </Link>
         </NavbarItem>
       </NavbarContent>

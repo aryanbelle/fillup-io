@@ -20,6 +20,7 @@ const CreatorFormModel = new mongoose.Schema(
     },
     questions: [
       {
+        _id: false,
         type: {
           type: String,
           required: true,
@@ -38,19 +39,6 @@ const CreatorFormModel = new mongoose.Schema(
             required: true,
           },
         ],
-      },
-    ],
-    responses: [
-      {
-        userFormResponseId: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-        },
-        userName: {
-          type: String,
-          unique: true,
-          required: true,
-        },
       },
     ],
   },

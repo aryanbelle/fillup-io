@@ -1,3 +1,4 @@
+import { decrypt } from "@/app/lib/crypto";
 import dbConnect from "@/app/lib/dbConnect";
 import CreatorForm from "@/app/models/CreatorForm";
 import userFormResponse from "@/app/models/userFormResponse";
@@ -5,22 +6,55 @@ import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { formid: string } }
 ) {
   try {
     await dbConnect();
-    const creatorId = await currentUser();
-    if (creatorId === null) {
-      return NextResponse.json({ message: "Unauthorized user" });
+    // const creatorID = await currentUser();
+    const creatorID = 'user_2jpufxLkYhVKDyKb6ZPwBlDba06';
+    
+    // Check if user is authorized
+    if (!creatorID) {
+      return NextResponse.json({ message: "Unauthorized user" }, { status: 401 });
     }
+
+    // Delete the form
     const form = await CreatorForm.findByIdAndDelete(params.formid);
-    const responses = await userFormResponse.deleteMany({
-      formId: params.formid,
-    });
-    return NextResponse.json({ success: true, message: "Form deleted" });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ success: 500, message: "Something went wrong" });
+    
+    // If form is not found, return 404
+    if (!form) {
+      return NextResponse.json({ message: "Form not found" }, { status: 404 });
+    }
+
+    // Delete associated user responses
+    await userFormResponse.deleteMany({ formId: params.formid });
+
+    return NextResponse.json({ success: true, message: "Form deleted" }, { status: 200 });
+
+  }  catch (error: any) {
+    console.error(error);
+
+    // Check for network-related errors
+    if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED' || error.code === 'EAI_AGAIN') {
+      return NextResponse.json(
+        { message: "Network error, please check your connection." },
+        { status: 503 } // 503 Service Unavailable
+      );
+    }
+
+    // Handle database errors or any other unforeseen errors
+    if (error.name === 'ValidationError') {
+      return NextResponse.json(
+        { message: "Invalid data provided." },
+        { status: 422 } // 422 Unprocessable Entity
+      );
+    }
+
+    // Handle any other errors
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 } // 500 Internal Server Error
+    );
   }
 }

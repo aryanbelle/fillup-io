@@ -13,9 +13,24 @@ import { Textarea } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import "./form.css";
 import axios from "axios";
-import { currentUser } from "@clerk/nextjs/server";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-const CreatorForm = () => {
+const CreatorForm = (props: {
+  title: "Untitled Form";
+  description: "Form description";
+  questions: [
+    {
+      type: "text";
+      text: "Your question";
+      options: [];
+      isRequired: true;
+    }
+  ];
+  isFile: false;
+}) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     title: "Untitled Form",
     description: "Form description",
@@ -27,18 +42,32 @@ const CreatorForm = () => {
         isRequired: true,
       },
     ],
+    isFile: false,
   });
-
+  console.log(props, "Params.....///////");
   const handleSendData = async (event) => {
+    setLoading(true);
     try {
       event.preventDefault();
       console.log("Sending...");
       const response = await axios.post("/api/creatorform", form);
       console.log(response, "RESPONSE FORM BACKEND");
+      if (response.data?.success) {
+        toast.success("Form created!");
+        router.push(`./dashboard`);
+      } else {
+        toast.error("Request failed, try again");
+      }
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error, "ERRORORORORO");
     }
   };
+
+  useEffect(() => {
+    setForm({ ...props.props });
+  }, []);
 
   const addQuestion = () => {
     setForm({
@@ -71,13 +100,27 @@ const CreatorForm = () => {
   };
 
   const handleTypeChange = (index, event) => {
-    const newQuestions = form.questions.map((question, i) => {
-      if (i === index) {
-        return { ...question, type: event, options: [] };
+    if (event !== "file") {
+      const newQuestions = form.questions.map((question, i) => {
+        if (i === index) {
+          return { ...question, type: event, options: [] };
+        }
+        return question;
+      });
+      setForm({ ...form, questions: newQuestions });
+    } else {
+      if (form.isFile) {
+        toast.error("Multiple file upload are not allowed!");
+      } else {
+        const newQuestions = form.questions.map((question, i) => {
+          if (i === index) {
+            return { ...question, type: event, options: [] };
+          }
+          return question;
+        });
+        setForm({ ...form, questions: newQuestions, isFile: true });
       }
-      return question;
-    });
-    setForm({ ...form, questions: newQuestions });
+    }
   };
 
   const handleOptionChange = (qIndex, oIndex, event) => {
@@ -110,10 +153,20 @@ const CreatorForm = () => {
   };
 
   const deleteQuestion = (index) => {
-    setForm({
-      ...form,
-      questions: form.questions.filter((_, i) => i !== index),
-    });
+    if (form.questions[index].type === "file") {
+      setForm({
+        ...form,
+        questions: form.questions.filter((_, i) => i !== index),
+        isFile: false,
+      });
+    } else {
+      setForm({
+        ...form,
+        questions: form.questions.filter((_, i) => {
+          return i !== index;
+        }),
+      });
+    }
   };
 
   return (
@@ -204,9 +257,13 @@ const CreatorForm = () => {
                         <DropdownItem key="time" value="time">
                           Time
                         </DropdownItem>
-                        <DropdownItem key="file" value="file">
-                          File
-                        </DropdownItem>
+                        {!form.isFile ? (
+                          <DropdownItem key="file" value="file">
+                            File
+                          </DropdownItem>
+                        ) : (
+                          ""
+                        )}
                         <DropdownItem key="radio" value="radio">
                           Radio
                         </DropdownItem>
@@ -289,7 +346,6 @@ const CreatorForm = () => {
             ))}
             <div className="flex justify-end">
               <Button
-                type="submit"
                 className="m-2"
                 size="sm"
                 color="primary"
@@ -307,7 +363,6 @@ const CreatorForm = () => {
           size="md"
           color="primary"
           variant="shadow"
-          onClick={handleSendData}
           // isLoading={true}
         >
           Create Form
