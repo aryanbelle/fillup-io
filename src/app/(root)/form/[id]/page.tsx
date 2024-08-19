@@ -127,7 +127,7 @@ const Form = ({ params }) => {
       console.log(response, "RESPONSE..............");
       if (response?.data?.success) {
         toast.success("Form created successfully!");
-        router.push("./");
+        router.push("/dashboard");
       } else {
         toast.error("Form submission failed, please try again!");
       }

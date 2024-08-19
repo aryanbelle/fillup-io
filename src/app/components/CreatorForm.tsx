@@ -66,7 +66,9 @@ const CreatorForm = (props: {
   };
 
   useEffect(() => {
-    setForm({ ...props.props });
+    if (props.props) {
+      setForm({ ...props.props });
+    }
   }, []);
 
   const addQuestion = () => {
@@ -170,7 +172,7 @@ const CreatorForm = (props: {
   };
 
   return (
-    <div className="mainclass flex flex-col  min-w-[390px] justify-center rounded-md max-w-[740px]  md:w-full text-gray-900 p-2 bg-white ">
+    <div className="mainclass flex flex-col min-w-[390px] justify-center rounded-md max-w-[740px]  md:w-full text-gray-900 p-2 bg-white ">
       <form action="" onSubmit={(event) => handleSendData(event)}>
         <div className=" rounded-lg">
           <div className="  p-1 mb-2 rounded-md">

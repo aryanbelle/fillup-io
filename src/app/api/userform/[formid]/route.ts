@@ -32,7 +32,7 @@ export async function GET(request: NextRequest, { params }: { params: { formid: 
         // Handle network-related errors
         if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED' || error.code === 'EAI_AGAIN') {
             return NextResponse.json(
-                { message: "Network error, please check your connection." },
+                { success: false, message: "Network error, please check your connection." },
                 { status: 503 }
             );
         }

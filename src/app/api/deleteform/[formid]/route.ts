@@ -16,7 +16,7 @@ export async function DELETE(
     
     // Check if user is authorized
     if (!creatorID) {
-      return NextResponse.json({ message: "Unauthorized user" }, { status: 401 });
+      return NextResponse.json({ success: false, message: "Unauthorized user" }, { status: 401 });
     }
 
     // Delete the form
@@ -24,7 +24,7 @@ export async function DELETE(
     
     // If form is not found, return 404
     if (!form) {
-      return NextResponse.json({ message: "Form not found" }, { status: 404 });
+      return NextResponse.json({ success: false, message: "Form not found" }, { status: 404 });
     }
 
     // Delete associated user responses
@@ -38,7 +38,7 @@ export async function DELETE(
     // Check for network-related errors
     if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED' || error.code === 'EAI_AGAIN') {
       return NextResponse.json(
-        { message: "Network error, please check your connection." },
+        { success: false, message: "Network error, please check your connection." },
         { status: 503 } // 503 Service Unavailable
       );
     }
@@ -46,14 +46,14 @@ export async function DELETE(
     // Handle database errors or any other unforeseen errors
     if (error.name === 'ValidationError') {
       return NextResponse.json(
-        { message: "Invalid data provided." },
+        {success: false, message: "Invalid data provided." },
         { status: 422 } // 422 Unprocessable Entity
       );
     }
 
     // Handle any other errors
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { success: false,message: "Internal Server Error" },
       { status: 500 } // 500 Internal Server Error
     );
   }

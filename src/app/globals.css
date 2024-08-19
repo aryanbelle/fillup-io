@@ -13,6 +13,11 @@
 .cl-internal-180wb59 {
   display: none;
 }
+
+.mainclass::-webkit-scrollbar {
+  display: none;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

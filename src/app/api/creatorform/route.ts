@@ -13,12 +13,12 @@ export async function POST(req: NextRequest) {
 
     // Check if user is authorized
     if (!id) {
-      return NextResponse.json({ message: "Unauthorized user" }, { status: 401 });
+      return NextResponse.json({ success: false, message: "Unauthorized user" }, { status: 401 });
     }
 
     // Validate required fields
     if (!title || !description || !questions) {
-      return NextResponse.json({ message: "Please fill all the fields" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "Please fill all the fields" }, { status: 400 });
     }
 
     // Create the form in the database
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     // Check for network-related errors
     if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED' || error.code === 'EAI_AGAIN') {
       return NextResponse.json(
-        { message: "Network error, please check your connection." },
+        {success: false, message: "Network error, please check your connection." },
         { status: 503 } // 503 Service Unavailable
       );
     }
@@ -47,14 +47,14 @@ export async function POST(req: NextRequest) {
     // Handle database errors or any other unforeseen errors
     if (error.name === 'ValidationError') {
       return NextResponse.json(
-        { message: "Invalid data provided." },
+        { success: false, message: "Invalid data provided." },
         { status: 422 } // 422 Unprocessable Entity
       );
     }
 
     // Handle any other errors
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { success: false, message: "Internal Server Error" },
       { status: 500 } // 500 Internal Server Error
     );
   }

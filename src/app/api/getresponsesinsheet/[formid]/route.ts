@@ -46,20 +46,46 @@ export async function POST(request: NextRequest, { params }: { params: { formid:
 
         const getData = await UserFormResponse.find({ formId: decryptedFormId });
 
-        // Transform data as required
+        // Extract title and description from the first response
+        const { title, description } = getData.length > 0 ? getData[0] : { title: "Untitled", description: "No description" };
+
+        // Flatten and transform data for Excel
         const data = getData.map((response) => {
+            const { userId, questions } = response;
+            const flattenedQuestions = questions.map((q, index) => ({
+                [`Question ${index + 1}`]: q.question,
+                [`Answer ${index + 1}`]: q.answer,
+            }));
             return {
-                userId: response.userId, 
-                questions: response.questions.map((field) => ({
-                    question: field.question, 
-                    answer: field.answer 
-                })),
+                userId,
+                ...flattenedQuestions.reduce((acc, obj) => ({ ...acc, ...obj }), {}),
             };
         });
 
-        // Convert JSON data to worksheet
-        const worksheet = XLSX.utils.json_to_sheet(data);
+        // Create a new workbook and worksheet
         const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet([]);
+
+        // Insert title (heading) in the first row
+        XLSX.utils.sheet_add_aoa(worksheet, [[title]], { origin: 'A1' });
+
+        // Merge cells for title (across the number of columns in data)
+        const columnsCount = Math.max(...data.map(row => Object.keys(row).length), 1); // Ensures at least 1 column is used
+        worksheet["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: columnsCount - 1 } }];
+
+        // Insert description (small heading) in the second row
+        XLSX.utils.sheet_add_aoa(worksheet, [[description]], { origin: 'A2' });
+
+        // Merge cells for description (across the same number of columns)
+        worksheet["!merges"].push({ s: { r: 1, c: 0 }, e: { r: 1, c: columnsCount - 1 } });
+
+        // Add a gap row after the title and description
+        XLSX.utils.sheet_add_aoa(worksheet, [[]], { origin: 'A3' });
+
+        // Append the data below the gap row
+        XLSX.utils.sheet_add_json(worksheet, data, { origin: 'A4' });
+
+        // Add the worksheet to the workbook
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
         // Write the workbook to a buffer
@@ -72,7 +98,7 @@ export async function POST(request: NextRequest, { params }: { params: { formid:
         const uploadResult = await streamUpload(buffer, fileName);
 
         if (!uploadResult) {
-            return NextResponse.json({ error: "Failed to upload file" }, { status: 500 });
+            return NextResponse.json({ success: false, message: "Failed to upload file" }, { status: 500 });
         }
 
         // Send the Cloudinary URL as a response

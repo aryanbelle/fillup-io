@@ -61,7 +61,7 @@ export default function NavigationBar() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="primary" href="./newform" aria-current="page">
+          <Link color="primary" href="/newform" aria-current="page">
             new form
           </Link>
         </NavbarItem>
