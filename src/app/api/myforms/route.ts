@@ -17,7 +17,7 @@ export async function GET() {
     let my_forms = await CreatorForm.find({
       creatorId: current_user.id,
     });
-
+    console.log(my_forms, "MYFORMS...");
     const forms = my_forms.map((form) => {
       return {
         id: encrypt(form._id.toString()),

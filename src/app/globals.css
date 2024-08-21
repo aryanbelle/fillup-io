@@ -14,8 +14,17 @@
   display: none;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.mainclass {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .mainclass::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Safari, and Opera */
 }
 
 @media (prefers-color-scheme: dark) {

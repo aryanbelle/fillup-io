@@ -172,15 +172,18 @@ const CreatorForm = (props: {
   };
 
   return (
-    <div className="mainclass flex flex-col min-w-[390px] justify-center rounded-md max-w-[740px]  md:w-full text-gray-900 p-2 bg-white ">
+    <div className="mainclass p-7 flex flex-col min-w-[390px] justify-center border-1  border-[#ccc] max-w-[740px] md:w-full text-gray-800 p-2 bg-white mt-20">
       <form action="" onSubmit={(event) => handleSendData(event)}>
-        <div className=" rounded-lg">
-          <div className="  p-1 mb-2 rounded-md">
-            <div className="mb-5 ">
-              <label className="block mb-1.5">Title of form</label>
+        <div className="rounded-lg">
+          <div className="p-1 mb-2 rounded-md">
+            <div className="mb-5">
+              <label className="block text-lg font-semibold mb-1.5">
+                Title of form
+              </label>
               <Input
+                radius="none"
                 type="text"
-                className="w-full max-w-4xl "
+                className="w-full border-1 border-[#ccc] max-w-4xl"
                 value={form.title}
                 size="lg"
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
@@ -188,10 +191,10 @@ const CreatorForm = (props: {
             </div>
             <div className="mb-2">
               <label className="block mb-1.5">Description of form</label>
-
               <Textarea
+                radius="none"
                 minRows={2}
-                className="max-w-4xl w-full"
+                className="max-w-4xl w-full border-1 m-0 border-[#ccc]"
                 value={form.description}
                 onChange={(e) =>
                   setForm({ ...form, description: e.target.value })
@@ -201,11 +204,8 @@ const CreatorForm = (props: {
           </div>
           <div className="p-1 text-xs mb-2">
             {form.questions.map((question, qIndex) => (
-              <div
-                key={qIndex}
-                className="lg:mb-2.5  p-2 border-1 border-gray-200 rounded-md "
-              >
-                <div className="flex justify-between items-center ">
+              <div key={qIndex} className="lg:mb-4 p-4  border-1 border-[#ccc]">
+                <div className="flex justify-between items-center">
                   <label className="block">Question</label>
                   <Button
                     className="bg-white"
@@ -214,24 +214,24 @@ const CreatorForm = (props: {
                     size="sm"
                     onClick={() => deleteQuestion(qIndex)}
                   >
-                    delete
+                    Delete
                   </Button>
                 </div>
                 <Input
+                  radius="none"
                   type="text"
-                  className="w-full text-small mb-4"
+                  className="w-full border-1 m-0 border-[#ccc] text-small mb-4"
                   value={question.text}
                   size="sm"
                   onChange={(e) => handleInputChange(qIndex, e)}
                 />
-
-                <div className="flex justify-end items-center h-5 m-1.5 ">
-                  <div className="flex justify-between items-center  sm:h-3 scale-[90%] lg:gap-4 sm: gap-2">
+                <div className="flex justify-end items-center h-5 m-1.5">
+                  <div className="flex justify-between items-center sm:h-3 scale-[90%] lg:gap-4 sm: gap-2">
                     <Dropdown>
                       <DropdownTrigger>
                         <Button
                           variant="bordered"
-                          className="capitalize "
+                          className="capitalize"
                           size="sm"
                         >
                           {question.type}
@@ -245,7 +245,6 @@ const CreatorForm = (props: {
                         onSelectionChange={(event) =>
                           handleTypeChange(qIndex, event.anchorKey?.toString())
                         }
-                        // onChange={(event) => handleTypeChange(qIndex, event)}
                       >
                         <DropdownItem key="text" value="text">
                           Text
@@ -274,7 +273,6 @@ const CreatorForm = (props: {
                         </DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
-
                     <Switch
                       defaultSelected
                       isSelected={question.isRequired}
@@ -283,67 +281,72 @@ const CreatorForm = (props: {
                       }
                       size="sm"
                     >
-                      required
+                      Required
                     </Switch>
                   </div>
                 </div>
-                {(question.type === "radio" ||
-                  question.type === "checkbox") && (
-                  <>
-                    {question.options.map((option, oIndex) => (
-                      <div
-                        key={oIndex}
-                        className="flex gap-2 scale-[95%] ml-[-8px]"
+                <div className="flex flex-col ">
+                  {(question.type === "radio" ||
+                    question.type === "checkbox") && (
+                    <div className="flex flex-wrap">
+                      {question.options.map((option, oIndex) => (
+                        <div
+                          key={oIndex}
+                          className="flex gap-2 scale-[95%] ml-[-8px]"
+                        >
+                          <label
+                            htmlFor=""
+                            className="items-center justify-center pt-1.5 text-medium"
+                          >
+                            {oIndex + 1}
+                          </label>
+                          <Input
+                            size="sm"
+                            radius="none"
+                            isRequired={true}
+                            type="text"
+                            className="mt-1 max-w-48"
+                            value={option}
+                            onChange={(e) =>
+                              handleOptionChange(qIndex, oIndex, e)
+                            }
+                          />
+                          <Button
+                            size="sm"
+                            variant="light"
+                            color="danger"
+                            className="text-xs text-red-500"
+                            onClick={() => {
+                              const newOptions = question.options.filter(
+                                (_, j) => j !== oIndex
+                              );
+                              const newQuestions = form.questions.map(
+                                (q, i) => {
+                                  if (i === qIndex) {
+                                    return { ...q, options: newOptions };
+                                  }
+                                  return q;
+                                }
+                              );
+                              setForm({ ...form, questions: newQuestions });
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        className="mt-2"
+                        color="primary"
+                        variant="bordered"
+                        size="sm"
+                        onClick={() => addOption(qIndex)}
                       >
-                        <label
-                          htmlFor=""
-                          className="items-center justify-center pt-1.5 text-medium"
-                        >
-                          {oIndex + 1}
-                        </label>
-                        <Input
-                          size="sm"
-                          isRequired={true}
-                          type="text"
-                          className="mt-1 max-w-48"
-                          value={option}
-                          onChange={(e) =>
-                            handleOptionChange(qIndex, oIndex, e)
-                          }
-                        />
-                        <Button
-                          size="sm"
-                          variant="light"
-                          color="danger"
-                          className="text-xs text-red-500"
-                          onClick={() => {
-                            const newOptions = question.options.filter(
-                              (_, j) => j !== oIndex
-                            );
-                            const newQuestions = form.questions.map((q, i) => {
-                              if (i === qIndex) {
-                                return { ...q, options: newOptions };
-                              }
-                              return q;
-                            });
-                            setForm({ ...form, questions: newQuestions });
-                          }}
-                        >
-                          remove
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      className="mt-2"
-                      color="primary"
-                      variant="bordered"
-                      size="sm"
-                      onClick={() => addOption(qIndex)}
-                    >
-                      Add Option
-                    </Button>
-                  </>
-                )}
+                        Add Option
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
             <div className="flex justify-end">
@@ -359,16 +362,16 @@ const CreatorForm = (props: {
             </div>
           </div>
         </div>
-        <Button
-          type="submit"
-          className="w-full  p-1"
-          size="md"
-          color="primary"
-          variant="shadow"
-          // isLoading={true}
-        >
-          Create Form
-        </Button>
+        {form.questions.length ? (
+          <Button
+            type="submit"
+            className="w-full p-1"
+            size="md"
+            color="primary"
+          >
+            Create Form
+          </Button>
+        ) : null}
       </form>
     </div>
   );

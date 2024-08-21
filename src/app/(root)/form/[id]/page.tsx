@@ -126,7 +126,7 @@ const Form = ({ params }) => {
       const response = await uploadFormResponse(_data); // Pass the updated data to uploadFormResponse
       console.log(response, "RESPONSE..............");
       if (response?.data?.success) {
-        toast.success("Form created successfully!");
+        toast.success("Form Submited!");
         router.push("/dashboard");
       } else {
         toast.error("Form submission failed, please try again!");

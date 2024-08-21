@@ -35,7 +35,7 @@ export default function NavigationBar() {
   ];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar onMenuOpenChange={setIsMenuOpen} className="h-[8vh] text-2xl">
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -49,23 +49,54 @@ export default function NavigationBar() {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="/dashboard" color="danger">
-            Dashboard
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="primary" href="/newform" aria-current="page">
-            new form
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
+      <SignedIn>
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+          <NavbarItem>
+            <Link color="foreground" href="#">
+              Upgrade
+            </Link>
+          </NavbarItem>
+          <NavbarItem isActive>
+            <Link href="/dashboard" color="danger">
+              Dashboard
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="primary" href="/newform" aria-current="page">
+              Chatbot
+            </Link>
+          </NavbarItem>
+        </NavbarContent>
+      </SignedIn>
+      <SignedOut>
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+          <NavbarItem>
+            <Link color="foreground" href="#home">
+              Home
+            </Link>
+          </NavbarItem>
+          <NavbarItem isActive>
+            <Link href="#features" color="danger">
+              Features
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="primary" href="/" aria-current="page">
+              Pricing
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="primary" href="#developers" aria-current="page">
+              About Us
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="primary" href="#footer" aria-current="page">
+              Contact
+            </Link>
+          </NavbarItem>
+        </NavbarContent>
+      </SignedOut>
       <NavbarContent justify="end">
         <NavbarItem className=" p-2  lg:flex">
           <SignedIn>

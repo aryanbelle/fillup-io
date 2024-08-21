@@ -1,19 +1,16 @@
 import React from "react";
 import CreatorForm from "@/app/components/CreatorForm";
+import axios from "axios";
 
 const Page = async ({ params }: { params: { key: string } }) => {
+  let data;
   try {
-    const response = await fetch(
+    const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/api/gettemplates/${params.key}`
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-
-    let data = await response.json();
-    if (data.success) {
-      data = { ...data.data, isFile: false };
+    if (response.data.success) {
+      data = { ...response.data.data, isFile: false };
     } else {
       throw new Error("Something Went wrong!");
     }
