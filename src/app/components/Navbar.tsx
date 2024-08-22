@@ -18,6 +18,7 @@ import {
   SignedIn,
   UserButton,
 } from "@clerk/nextjs";
+import Image from "next/image";
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -43,8 +44,7 @@ export default function NavigationBar() {
         />
         <NavbarBrand>
           <Link color="foreground" href="./">
-            <div className="italic">FILLUP</div>
-            <p className="font-bold text-inherit italic">.io</p>
+            <Image src={"/LOGO.PNG"} alt="LOGO" width={80} height={40} />
           </Link>
         </NavbarBrand>
       </NavbarContent>
@@ -52,46 +52,42 @@ export default function NavigationBar() {
       <SignedIn>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem>
-            <Link color="foreground" href="#">
-              Upgrade
-            </Link>
+            <Link href="#">Upgrade</Link>
           </NavbarItem>
           <NavbarItem isActive>
-            <Link href="/dashboard" color="danger">
-              Dashboard
-            </Link>
+            <Link href="/dashboard">Dashboard</Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="primary" href="/newform" aria-current="page">
+            <Link color="primary" href="/newform">
               Chatbot
             </Link>
           </NavbarItem>
         </NavbarContent>
       </SignedIn>
       <SignedOut>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent className="hidden sm:flex gap-7 " justify="center">
           <NavbarItem>
-            <Link color="foreground" href="#home">
+            <Link href="#home" color="foreground">
               Home
             </Link>
           </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="#features" color="danger">
+          <NavbarItem>
+            <Link href="#features" color="foreground">
               Features
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="primary" href="/" aria-current="page">
+            <Link href="/" color="foreground">
               Pricing
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="primary" href="#developers" aria-current="page">
+            <Link href="#developers" color="foreground">
               About Us
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="primary" href="#footer" aria-current="page">
+            <Link href="#footer" color="foreground">
               Contact
             </Link>
           </NavbarItem>

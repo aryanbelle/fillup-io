@@ -7,7 +7,13 @@ import "../../../public/simplified.jpg";
 import "../../../public/templates.jpg";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-
+import {
+  FaTwitter,
+  FaLinkedin,
+  FaGithub,
+  FaPhone,
+  FaEnvelope,
+} from "react-icons/fa";
 export default function Home() {
   const router = useRouter();
   const { isSignedIn } = useAuth();
@@ -18,7 +24,10 @@ export default function Home() {
     return (
       <div className="bg-white text-gray-800">
         {/* Hero Section */}
-        <section className="h-screen flex flex-col lg:flex-row justify-center items-center relative px-4">
+        <section
+          id="home"
+          className="h-screen flex flex-col lg:flex-row justify-center items-center relative px-4"
+        >
           {/* Hero Image */}
           <motion.div
             className="relative hidden lg:block lg:w-1/2 align-center"
@@ -176,7 +185,7 @@ export default function Home() {
               className="bg-blue-500 hover:bg-blue-700 text-white py-4 px-8 sm:px-10 rounded-full text-lg shadow-xl transform hover:scale-105 transition-all duration-300"
               whileHover={{ scale: 1.1 }}
             >
-              Learn More About Our Security
+              <a href="/security">Learn More About Our Security</a>
             </motion.button>
           </div>
         </section>
@@ -197,12 +206,12 @@ export default function Home() {
                 {
                   name: "Sanket Kore",
                   img: "https://avatars.githubusercontent.com/u/117569459?v=4",
-                  role: "Frontend Developer",
+                  role: "Developer",
                 },
                 {
-                  name: "Onkar Shinde",
+                  name: "Aryan Belle",
                   img: "https://avatars.githubusercontent.com/u/117569459?v=4",
-                  role: "Backend Developer",
+                  role: "Developer",
                 },
               ].map((dev, index) => (
                 <motion.div
@@ -236,6 +245,55 @@ export default function Home() {
             <p>
               &copy; {new Date().getFullYear()} FillUp.io. All rights reserved.
             </p>
+            <div className="flex justify-center space-x-6 mt-4">
+              <a
+                href="https://twitter.com/yourprofile"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaTwitter className="text-white text-2xl hover:text-gray-400" />
+              </a>
+
+              <a
+                href="https://linkedin.com/in/yourprofile"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaLinkedin className="text-white text-2xl hover:text-gray-400" />
+              </a>
+
+              <a
+                href="https://github.com/yourprofile"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaGithub className="text-white text-2xl hover:text-gray-400" />
+              </a>
+            </div>
+            <div className="mt-4">
+              <p className="flex items-center justify-center space-x-2">
+                <FaPhone className="text-white" />
+                <span>+1 (123) 456-7890</span>
+              </p>
+              <p className="flex items-center justify-center space-x-2 mt-2">
+                <FaEnvelope className="text-white" />
+                <a
+                  href="mailto:aryanbelle692@gmail.com"
+                  className="hover:underline"
+                >
+                  aryanbelle692@gmail.com
+                </a>
+              </p>
+              <p className="flex items-center justify-center space-x-2 mt-2">
+                <FaEnvelope className="text-white" />
+                <a
+                  href="mailto:sanketkore960@gmail.com"
+                  className="hover:underline"
+                >
+                  sanketkore960@gmail.com
+                </a>
+              </p>
+            </div>
           </div>
         </footer>
       </div>

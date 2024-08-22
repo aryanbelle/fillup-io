@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import toast from "react-hot-toast";
+import NotFound from "@/app/not-found";
 
 const Page = ({ params }: { params: { id: String } }) => {
   const searchParams = useSearchParams();
@@ -20,7 +21,7 @@ const Page = ({ params }: { params: { id: String } }) => {
           return setSheet(response.data.url);
         } else {
           toast.error(response.data.message);
-          console.log(response, "RESPONSE FROM BACKEND ////");
+          console.log(response, "RESPONSE FROM BACKEND ");
         }
       } catch (error) {
         console.error("Failed to download the file", error);
@@ -33,6 +34,10 @@ const Page = ({ params }: { params: { id: String } }) => {
         data: pageNo,
       });
       if (response.data.success) {
+        console.log(
+          response,
+          "Response........................................................"
+        );
         setFormResponse(response.data.data);
       } else {
         toast.error(response.data.message);
@@ -41,56 +46,64 @@ const Page = ({ params }: { params: { id: String } }) => {
     fetchData();
   }, [pageNo, params.id]);
 
-  return (
-    <div className="mainclass w-full min-h-screen bg-[f8f8ff] flex flex-col items-center py-8 px-4">
-      <h2 className="text-  xl font-semibold mb-4 text-slate-800 drop-shadow-lg">
-        {formResponse[0]?.title}
-      </h2>
-      <p className="mb-6 text-slate-600 text-opacity-90">
-        {formResponse[0]?.description}
-      </p>
-      <Button
-        variant="flat"
-        color="primary"
-        className="mb-6  hover:bg-blue-100 transition duration-300"
-      >
-        {sheet ? <a href={sheet}>Download Responses as Excel</a> : "Loading..."}
-      </Button>
-      {formResponse.map((form) => (
-        <div
-          key={form._id}
-          className="w-full lg:max-w-[560px] p-6 mb-8 bg-white shadow-2xl rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg"
+  if (formResponse.length) {
+    return (
+      <div className="mainclass w-full min-h-screen bg-[f8f8ff] flex flex-col items-center py-8 px-4">
+        <h2 className="text-  xl font-semibold mb-4 text-slate-800 drop-shadow-lg">
+          {formResponse[0]?.title}
+        </h2>
+        <p className="mb-6 text-slate-600 text-opacity-90">
+          {formResponse[0]?.description}
+        </p>
+        <Button
+          variant="flat"
+          color="primary"
+          className="mb-6  hover:bg-blue-100 transition duration-300"
         >
-          {form.questions.map((question, index) => (
-            <div key={question._id} className="mb-4">
-              <p className=" text-gray-700 text-lg">
-                {index + 1}. {question.question}
-              </p>
-              {question.answer_type !== "file" ? (
-                <Input
-                  size="md"
-                  readOnly
-                  className="text-lg italic w-full rounded-none text-gray-900 border-gray-300 focus:border-blue-500 transition duration-200"
-                  value={
-                    question.answer_type === "checkbox"
-                      ? question.answer.split(",").join(", ")
-                      : question.answer
-                  }
-                />
-              ) : (
-                <a
-                  href={question.answer}
-                  className="mt-2 inline-block rounded-md bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 transition duration-300"
-                >
-                  Open File
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
+          {sheet ? (
+            <a href={sheet}>Download Responses as Excel</a>
+          ) : (
+            "Loading..."
+          )}
+        </Button>
+        {formResponse.map((form) => (
+          <div
+            key={form._id}
+            className="w-full lg:max-w-[560px] p-6 mb-8 bg-white shadow-2xl rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg"
+          >
+            {form.questions.map((question, index) => (
+              <div key={question._id} className="mb-4">
+                <p className=" text-gray-700 text-lg">
+                  {index + 1}. {question.question}
+                </p>
+                {question.answer_type !== "file" ? (
+                  <Input
+                    size="md"
+                    readOnly
+                    className="text-lg italic w-full rounded-none text-gray-900 border-gray-300 focus:border-blue-500 transition duration-200"
+                    value={
+                      question.answer_type === "checkbox"
+                        ? question.answer.split(",").join(", ")
+                        : question.answer
+                    }
+                  />
+                ) : (
+                  <a
+                    href={question.answer}
+                    className="mt-2 inline-block rounded-md bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 transition duration-300"
+                  >
+                    Open File
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  } else {
+    <NotFound />;
+  }
 };
 
 export default Page;

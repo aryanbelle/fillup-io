@@ -54,7 +54,7 @@ const CreatorForm = (props: {
       console.log(response, "RESPONSE FORM BACKEND");
       if (response.data?.success) {
         toast.success("Form created!");
-        router.push(`./dashboard`);
+        router.push(`/#recents`);
       } else {
         toast.error("Request failed, try again");
       }

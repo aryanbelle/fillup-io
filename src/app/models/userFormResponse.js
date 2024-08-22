@@ -33,6 +33,6 @@ const UserFormResponseModel = mongoose.Schema({
     },
   ],
 });
-
+UserFormResponseModel.index({ userId: 1, formId: 1 }, { unique: true });
 export default mongoose.models.UserFormResponse ||
   mongoose.model("UserFormResponse", UserFormResponseModel);

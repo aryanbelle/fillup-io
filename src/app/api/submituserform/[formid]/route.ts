@@ -19,8 +19,8 @@ export async function POST(
     const formId = decrypt(params.formid);
 
     // Replace this with actual user authentication
-    const userId = "user_2jpufxLkYhVKDyKb6ZPwBlDba06";
-    if (!userId) {
+    const { id } = await currentUser();
+    if (!id) {
       return NextResponse.json(
         {
           success: false,
@@ -119,6 +119,7 @@ export async function POST(
             creatorForm.questions[i].options,
             questions[i].answer
           );
+          console.log(questions[i].answer, "ANSWER TESTING ----");
           questions[i].answer = questions[i].answer.join(",");
           if (!result) {
             return NextResponse.json(
@@ -160,7 +161,7 @@ export async function POST(
     }
 
     const data = await UserFormResponse.create({
-      userId,
+      userId: id,
       formId,
       title,
       description,
@@ -180,7 +181,12 @@ export async function POST(
         { status: 503 }
       );
     }
-
+    if (error.code === 11000) {
+      return NextResponse.json({
+        success: false,
+        message: "The response was already submitted",
+      });
+    }
     return NextResponse.json(
       { success: false, message: "Something went wrong" },
       { status: 500 }

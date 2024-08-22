@@ -119,6 +119,10 @@ const Form = ({ params }) => {
   };
 
   async function mainHandleSubmit(event) {
+    console.log(
+      formData,
+      "FORMDATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    );
     event.preventDefault();
     setIsLoading(true);
     try {
@@ -129,7 +133,7 @@ const Form = ({ params }) => {
         toast.success("Form Submited!");
         router.push("/dashboard");
       } else {
-        toast.error("Form submission failed, please try again!");
+        toast.error(response?.data.message);
       }
     } catch (error) {
       console.log(error, "ERROR IN MAIN HANDLESUBMIT");
@@ -140,18 +144,20 @@ const Form = ({ params }) => {
   }
 
   return (
-    <div className="max-w-2xl flex flex-col justify-center mx-auto p-4 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">{formData.title}</h1>
-      <p className="mb-4">{formData.description}</p>
+    <div className="max-w-2xl flex flex-col justify-center mx-auto p-4 text-gray-800 bg-white shadow-md rounded-lg">
+      <h1 className="text-2xl font-semibold mb-3">{formData.title}</h1>
+      <p className="mb-3">{formData.description}</p>
       <form onSubmit={(event) => mainHandleSubmit(event)}>
         {formData.questions.map((question, index) => (
           <div key={question._id} className="mb-4">
-            <label className="block mb-2 text-lg font-semibold">
+            <label className="block mb-2 text-lg ">
               {question.text}{" "}
               {question.isRequired && <span className="text-red-500">*</span>}
             </label>
             {question.type === "text" && (
               <Input
+                className="w-full border-1 border-[#ccc] max-w-4xl"
+                radius="none"
                 type="text"
                 required={question.isRequired}
                 value={question.answer}
@@ -163,42 +169,47 @@ const Form = ({ params }) => {
             )}
             {question.type === "number" && (
               <Input
+                className="w-full border-1 border-[#ccc] max-w-4xl"
+                radius="none"
                 type="number"
                 required={question.isRequired}
                 value={question.answer}
                 onChange={(e) =>
                   handleInputChange(index, e.target.value, false)
                 }
-                className="w-full p-2  rounded"
               />
             )}
             {question.type === "date" && (
               <Input
+                className="w-full border-1 border-[#ccc] max-w-4xl"
+                radius="none"
                 type="date"
                 required={question.isRequired}
                 value={question.answer}
                 onChange={(e) =>
                   handleInputChange(index, e.target.value, false)
                 }
-                className="w-full p-2  rounded"
               />
             )}
             {question.type === "file" && (
               <Input
+                className="w-full border-1 border-[#ccc] max-w-4xl"
+                radius="none"
                 type="file"
                 required={question.isRequired}
                 onChange={(e) =>
                   handleInputChange(index, e.target.files, false)
                 }
-                className="w-full p-2  rounded"
               />
             )}
             {question.type === "radio" && (
-              <div>
+              <div className="">
                 {question.options.map((option, oIndex) => (
-                  <div key={oIndex} className="mb-2">
+                  <div key={oIndex} className="mb-2 ">
                     <label className="inline-flex items-center">
                       <Input
+                        className=" form-radio w-full border-1 border-[#ccc] max-w-4xl"
+                        radius="none"
                         type="radio"
                         name={`question_${index}`}
                         value={option}
@@ -207,7 +218,6 @@ const Form = ({ params }) => {
                         onChange={(e) =>
                           handleInputChange(index, e.target.value, false)
                         }
-                        className="form-radio"
                       />
                       <span className="ml-2">{option}</span>
                     </label>
@@ -216,19 +226,20 @@ const Form = ({ params }) => {
               </div>
             )}
             {question.type === "checkbox" && (
-              <div>
+              <div className="">
                 {question.options.map((option, oIndex) => (
                   <div key={oIndex} className="mb-2">
                     <label className="inline-flex items-center">
-                      <input
+                      <Input
+                        className="w-10 border-1 border-[#ccc] "
                         type="checkbox"
+                        radius="none"
                         name={`question_${index}`}
                         value={option}
                         checked={question.answer.includes(option)}
                         onChange={() =>
                           handleInputChange(index, null, true, option)
                         }
-                        className="form-checkbox"
                       />
                       <span className="ml-2">{option}</span>
                     </label>

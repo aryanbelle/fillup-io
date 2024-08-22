@@ -20,7 +20,7 @@ const CustomSnippet = ({ url }) => {
       <CopyToClipboard text={url} onCopy={handleCopy}>
         <button
           className={`absolute  top-1/2 right-2 transform -translate-y-1/2 text-white text-lg rounded transition duration-300 ease-in-out ${
-            copied ? "bg-green-500" : "bg-blue-500"
+            copied ? "bg-green-500 text-gray-700" : "bg-blue-500"
           } p-2`}
           title="Copy URL"
           aria-label={copied ? "Copied" : "Copy URL"}
