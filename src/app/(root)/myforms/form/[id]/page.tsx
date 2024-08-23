@@ -8,7 +8,6 @@ import NotFound from "@/app/not-found";
 import Link from "next/link";
 
 const Page = ({ params }: { params: { id: String } }) => {
-  const searchParams = useSearchParams();
   const [formResponse, setFormResponse] = useState([]);
   const [pageNo, setPageNo] = useState(0);
   const [sheet, setSheet] = useState(null);
