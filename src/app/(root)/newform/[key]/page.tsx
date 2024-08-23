@@ -26,7 +26,7 @@ const Page = async ({ params }: { params: { key: string } }) => {
               questions: data.questions.map((que) => ({
                 type: que.type,
                 text: que.text,
-                options: que.options,
+                options: [...que?.options],
                 isRequired: que.isRequired,
               })),
               isFile: false,

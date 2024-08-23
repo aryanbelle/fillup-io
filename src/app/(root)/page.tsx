@@ -82,7 +82,10 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="py-16 sm:py-20 bg-gradient-to-b from-white to-gray-100">
+        <section
+          id="features"
+          className="py-16 sm:py-20 bg-gradient-to-b from-white to-gray-100"
+        >
           <div className="container mx-auto px-4 sm:px-6 text-center">
             <motion.h2
               className="text-3xl sm:text-4xl font-extrabold mb-12 text-gray-900"
@@ -92,10 +95,7 @@ export default function Home() {
             >
               Our Cutting-Edge Features
             </motion.h2>
-            <div
-              id="features"
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <motion.div
                 className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
@@ -191,7 +191,10 @@ export default function Home() {
         </section>
 
         {/* Developers Section */}
-        <section className="py-16 sm:py-20 bg-gradient-to-b from-gray-100 to-white">
+        <section
+          id="developers"
+          className="py-16 sm:py-20 bg-gradient-to-b from-gray-100 to-white"
+        >
           <div className="container mx-auto px-4 sm:px-6 text-center">
             <motion.h2
               className="text-3xl sm:text-4xl font-extrabold mb-12 text-gray-900"
@@ -240,7 +243,7 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-gray-900 py-8">
+        <footer id="footer" className="bg-gray-900 py-8">
           <div className="container mx-auto px-4 sm:px-6 text-center text-white">
             <p>
               &copy; {new Date().getFullYear()} FillUp.io. All rights reserved.

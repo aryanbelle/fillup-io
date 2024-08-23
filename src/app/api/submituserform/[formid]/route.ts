@@ -17,7 +17,7 @@ export async function POST(
     await dbConnect();
     const form = await req.json();
     const formId = decrypt(params.formid);
-
+    console.log(form, "FRONT END DATAAAAAAAAAAAAAAAAA");
     // Replace this with actual user authentication
     const { id } = await currentUser();
     if (!id) {

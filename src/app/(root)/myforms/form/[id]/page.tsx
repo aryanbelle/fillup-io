@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import NotFound from "@/app/not-found";
+import Link from "next/link";
 
 const Page = ({ params }: { params: { id: String } }) => {
   const searchParams = useSearchParams();
@@ -61,7 +62,7 @@ const Page = ({ params }: { params: { id: String } }) => {
           className="mb-6  hover:bg-blue-100 transition duration-300"
         >
           {sheet ? (
-            <a href={sheet}>Download Responses as Excel</a>
+            <Link href={sheet}>Download Responses as Excel</Link>
           ) : (
             "Loading..."
           )}
@@ -88,12 +89,12 @@ const Page = ({ params }: { params: { id: String } }) => {
                     }
                   />
                 ) : (
-                  <a
+                  <Link
                     href={question.answer}
                     className="mt-2 inline-block rounded-md bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 transition duration-300"
                   >
                     Open File
-                  </a>
+                  </Link>
                 )}
               </div>
             ))}
