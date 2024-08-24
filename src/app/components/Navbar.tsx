@@ -50,15 +50,19 @@ export default function NavigationBar() {
       </NavbarContent>
 
       <SignedIn>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent className="hidden sm:flex gap-6" justify="center">
           <NavbarItem>
-            <Link href="#">Upgrade</Link>
-          </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="/dashboard">Dashboard</Link>
+            <Link color="foreground" href="#">
+              Upgrade
+            </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="primary" href="/newform">
+            <Link color="foreground" href="/dashboard">
+              Dashboard
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="foreground" href="/newform">
               Chatbot
             </Link>
           </NavbarItem>

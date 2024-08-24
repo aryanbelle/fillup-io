@@ -160,6 +160,10 @@ export async function POST(
       }
     }
 
+    console.log(
+      questions,
+      "QUESTIONS./////////////////////////////////////////////////////"
+    );
     const data = await UserFormResponse.create({
       userId: id,
       formId,

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const Form = ({ params }) => {
+const Form = ({ id }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ const Form = ({ params }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/userform/${params.id}`);
+        const response = await axios.get(`/api/userform/${id}`);
         console.log(response, "fetching");
         if (response.data.data) {
           const _formData = response.data.data;
@@ -38,7 +38,7 @@ const Form = ({ params }) => {
       }
     };
     fetchData();
-  }, [params.id]);
+  }, []);
 
   const handleInputChange = (index, value, isCheckbox, option) => {
     const newQuestions = [...formData.questions];
@@ -78,7 +78,7 @@ const Form = ({ params }) => {
         })),
       };
       const response = await axios.post(
-        `/api/submituserform/${params.id}`,
+        `/api/submituserform/${id}`,
         serverFormData
       );
       console.log(response, "UPLOAD RESPONSE....");
