@@ -32,16 +32,9 @@ const CreatorForm = (props: {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    title: "Untitled Form",
-    description: "Form description",
-    questions: [
-      {
-        type: "text",
-        text: "Your question",
-        options: [],
-        isRequired: true,
-      },
-    ],
+    title: props.title,
+    description: props.description,
+    questions: [...props.questions],
     isFile: false,
   });
   console.log(props, "Params.....///////");
@@ -364,6 +357,7 @@ const CreatorForm = (props: {
         </div>
         {form.questions.length ? (
           <Button
+            isLoading={loading}
             type="submit"
             className="w-full p-1"
             size="md"

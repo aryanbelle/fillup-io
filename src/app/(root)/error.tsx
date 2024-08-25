@@ -17,7 +17,7 @@ export default function Error({
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
-        <h2 className="text-3xl font-semibold mb-4 text-red-500">Oops!</h2>
+        <h2 className="text-3xl font-semibold mb-4 text-red-500">Oops! 😭</h2>
         <p className="text-lg mb-6">
           Something went wrong. We’re working on it!
         </p>

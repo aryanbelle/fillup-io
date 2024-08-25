@@ -1,23 +1,18 @@
-"use client";
 import React from "react";
 import MyCard from "./Card";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import Sphere from "./Sphere";
+import Link from "next/link";
 const Templates = () => {
-  const router = useRouter();
   return (
-    <div className=" flex gap-10 flex-wrap   w-full">
+    <div className=" flex gap-10 flex-wrap ">
       <a
         href="/newform"
         className=" rounded-lg cursor-pointer transition-transform transform hover:scale-105 duration-300 bg-white "
       >
-        <Card
-          radius="none"
-          isBlurred={true}
-          className=""
-          onClick={() => router.push("/newform")}
-        >
-          <div onClick={() => {}}>
+        <Card radius="none" isBlurred={true} className="">
+          <div>
             <CardHeader className="pb-2 pt-4 px-4 flex flex-col items-start">
               <h4 className="font-semibold text-lg text-left">Blank Form</h4>
               <small className="text-sm text-gray-600 mt-1">
@@ -65,6 +60,7 @@ const Templates = () => {
         img={"/Working Feedback.jpg"}
         description="Monitor and improve workplace satisfaction with direct feedback."
       />
+      <Sphere />
     </div> //this parent of that card fix this too
   );
 };

@@ -8,7 +8,7 @@ export default function NoDataPlaceholder({ DATA }: { Data: String }) {
         No {DATA} Found
       </h2>
       <p className="text-lg mb-6 text-gray-500">
-        It looks like you haven't added any {DATA} yet.
+        Looks like there's nothing here yet!
       </p>
     </div>
   );

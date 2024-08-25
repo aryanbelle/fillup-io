@@ -14,11 +14,11 @@ export default function MyCard(props: Props) {
   const router = useRouter();
   function handleDefaultForm(serverKey: string) {
     console.log("Rendering...");
-    router.push(`./newform/${serverKey}`);
+    router.push(`/newform/${serverKey}`);
   }
 
   return (
-    <div className="flex flex-wrap max-w-xs bg-white justify-center rounded-lg cursor-pointer transition-transform transform hover:scale-105 duration-300 bg-white">
+    <div className="flex flex-wrap max-w-xs justify-center rounded-lg cursor-pointer transition-transform transform hover:scale-105 duration-300 bg-white">
       <Card radius="none" isBlurred={true} className="">
         <div onClick={() => handleDefaultForm(props.server_key)}>
           <CardHeader className="pb-0 pt-3 px-4 flex flex-col items-start">

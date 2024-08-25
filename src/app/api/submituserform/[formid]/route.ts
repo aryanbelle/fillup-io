@@ -9,7 +9,7 @@ export async function POST(
   req: NextRequest,
   { params }: { params: { formid: string } }
 ): Promise<NextResponse> {
-  function isSubset(arr1: string[], arr2: string[]): boolean {
+  function isSubset(arr1, arr2) {
     return arr2.every((element) => arr1.includes(element));
   }
 
@@ -87,7 +87,7 @@ export async function POST(
 
     for (let i = 0; i < creatorForm.questions.length; i++) {
       if (creatorForm.questions[i].isRequired) {
-        if (questions[i].question === "" || questions[i].answer === "") {
+        if (questions[i].answer === "" || questions[i].answer.length === 0) {
           return NextResponse.json(
             {
               success: false,
@@ -96,74 +96,70 @@ export async function POST(
             { status: 400 }
           );
         }
-        if (questions[i].question !== creatorForm.questions[i].text) {
+      }
+      if (questions[i].question !== creatorForm.questions[i].text) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Invalid question",
+          },
+          { status: 400 }
+        );
+      }
+      if (questions[i].answer_type !== creatorForm.questions[i].type) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Invalid answer type",
+          },
+          { status: 400 }
+        );
+      }
+      if (questions[i].answer_type === "checkbox") {
+        console.log(questions[i].answer);
+        const result = isSubset(
+          creatorForm.questions[i].options,
+          questions[i].answer
+        );
+        questions[i].answer = questions[i].answer.join(",");
+        if (!result) {
           return NextResponse.json(
             {
               success: false,
-              message: "Invalid question",
+              message: "Invalid answer options for checkbox",
             },
             { status: 400 }
           );
         }
-        if (questions[i].answer_type !== creatorForm.questions[i].type) {
-          return NextResponse.json(
-            {
-              success: false,
-              message: "Invalid answer type",
-            },
-            { status: 400 }
-          );
-        }
-        if (questions[i].answer_type === "checkbox") {
-          const result = isSubset(
-            creatorForm.questions[i].options,
-            questions[i].answer
-          );
-          console.log(questions[i].answer, "ANSWER TESTING ----");
-          questions[i].answer = questions[i].answer.join(",");
-          if (!result) {
-            return NextResponse.json(
-              {
-                success: false,
-                message: "Invalid answer options for checkbox",
-              },
-              { status: 400 }
-            );
-          }
-        }
+      }
 
-        if (questions[i].answer_type === "radio") {
-          if (questions[i].answer.length > 1) {
-            return NextResponse.json(
-              {
-                success: false,
-                message: "Multiple options selected in radio type",
-              },
-              { status: 400 }
-            );
-          }
-          const result = isSubset(
-            creatorForm.questions[i].options,
-            questions[i].answer
+      if (questions[i].answer_type === "radio") {
+        if (questions[i].answer.length > 1) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: "Multiple options selected in radio type",
+            },
+            { status: 400 }
           );
-          questions[i].answer = questions[i].answer.join(",");
-          if (!result) {
-            return NextResponse.json(
-              {
-                success: false,
-                message: "Selected option does not match radio options",
-              },
-              { status: 400 }
-            );
-          }
+        }
+        const result = isSubset(
+          creatorForm.questions[i].options,
+          questions[i].answer
+        );
+        questions[i].answer = questions[i].answer[0];
+        if (!result) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: "Selected option does not match radio options",
+            },
+            { status: 400 }
+          );
         }
       }
     }
 
-    console.log(
-      questions,
-      "QUESTIONS./////////////////////////////////////////////////////"
-    );
     const data = await UserFormResponse.create({
       userId: id,
       formId,
