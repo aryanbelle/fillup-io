@@ -36,7 +36,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900">
+    <div className="flex justify-center items-center pt-5 min-h-screen min-w-[90vw] w-full bg-gray-100">
       <div className="space-y-6 text-center">
         <div className="flex space-x-4">
           <input
@@ -44,7 +44,7 @@ const Page = () => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Enter your prompt"
-            className="w-full max-w-md px-6 py-3 text-lg bg-gray-800 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+            className="w-full max-w-md px-6 py-3 text-lg bg-white text-gray-600 rounded-lg border border-gray-600 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
           />
           <button
             onClick={fetchData}
