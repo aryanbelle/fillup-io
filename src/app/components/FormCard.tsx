@@ -81,7 +81,7 @@ const FormCard = () => {
                   </CardHeader>
                   <CardBody className="bg-gray-50 p-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm text-gray-600 overflow-hidden">
                         {form.description}
                       </span>
                       <span className="text-sm text-gray-500 italic">

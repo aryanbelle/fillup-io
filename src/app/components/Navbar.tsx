@@ -80,11 +80,7 @@ export default function NavigationBar() {
               Features
             </Link>
           </NavbarItem>
-          <NavbarItem>
-            <Link href="/pricing" color="foreground">
-              Pricing
-            </Link>
-          </NavbarItem>
+
           <NavbarItem>
             <Link href="#about" color="foreground">
               About Us
