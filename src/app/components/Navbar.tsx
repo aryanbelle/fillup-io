@@ -9,7 +9,6 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   Link,
-  Button,
 } from "@nextui-org/react";
 import {
   SignInButton,
@@ -19,57 +18,58 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Image from "next/image";
+
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
+    { label: "Profile", href: "/profile" },
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Activity", href: "/activity" },
+    { label: "Analytics", href: "/analytics" },
+    { label: "System", href: "/system" },
+    { label: "Deployments", href: "/deployments" },
+    { label: "My Settings", href: "/settings" },
+    { label: "Team Settings", href: "/team-settings" },
+    { label: "Help & Feedback", href: "/help" },
+    { label: "Log Out", href: "/logout" },
   ];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} className="h-[8vh] text-2xl">
+    <Navbar
+      onMenuOpenChange={setIsMenuOpen}
+      className="h-[8vh] text-lg sm:text-xl"
+    >
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Link color="foreground" href="./">
-            <Image src={"/LOGO.PNG"} alt="LOGO" width={80} height={40} />
+          <Link href="/" className="flex items-center">
+            <Image src={"/LOGO.PNG"} alt="FIILUP.IO" width={70} height={35} />
           </Link>
         </NavbarBrand>
       </NavbarContent>
 
       <SignedIn>
-        <NavbarContent className="hidden sm:flex gap-6" justify="center">
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+          <NavbarItem></NavbarItem>
           <NavbarItem>
-            <Link color="foreground" href="#">
-              Upgrade
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="/dashboard">
+            <Link href="/dashboard" color="foreground">
               Dashboard
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="foreground" href="/newform">
-              Chatbot
+            <Link href="/ai" color="foreground">
+              AI (Form)
             </Link>
           </NavbarItem>
         </NavbarContent>
       </SignedIn>
+
       <SignedOut>
-        <NavbarContent className="hidden sm:flex gap-7 " justify="center">
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem>
             <Link href="#home" color="foreground">
               Home
@@ -81,24 +81,25 @@ export default function NavigationBar() {
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link href="/" color="foreground">
+            <Link href="/pricing" color="foreground">
               Pricing
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link href="#developers" color="foreground">
+            <Link href="#about" color="foreground">
               About Us
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link href="#footer" color="foreground">
+            <Link href="#contact" color="foreground">
               Contact
             </Link>
           </NavbarItem>
         </NavbarContent>
       </SignedOut>
+
       <NavbarContent justify="end">
-        <NavbarItem className=" p-2  lg:flex">
+        <NavbarItem>
           <SignedIn>
             <UserButton />
           </SignedIn>
@@ -107,22 +108,22 @@ export default function NavigationBar() {
           </SignedOut>
         </NavbarItem>
       </NavbarContent>
+
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem key={`${item.label}-${index}`}>
             <Link
+              href={item.href}
               color={
-                index === 2
+                item.label === "Activity"
                   ? "primary"
-                  : index === menuItems.length - 1
+                  : item.label === "Log Out"
                   ? "danger"
                   : "foreground"
               }
               className="w-full"
-              href="#"
-              size="lg"
             >
-              {item}
+              {item.label}
             </Link>
           </NavbarMenuItem>
         ))}

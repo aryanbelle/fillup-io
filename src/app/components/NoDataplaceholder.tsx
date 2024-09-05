@@ -1,6 +1,3 @@
-"use client";
-import { Button } from "@nextui-org/react";
-
 export default function NoDataPlaceholder({ DATA }: { Data: String }) {
   return (
     <div className="flex flex-col w-full items-center justify-center m-4 bg-gray-100 text-gray-800 p-4 rounded-lg">
