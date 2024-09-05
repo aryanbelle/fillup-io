@@ -1,6 +1,6 @@
 import { decrypt } from "@/app/lib/crypto";
 import dbConnect from "@/app/lib/dbConnect";
-import CreatorForm from "@/app/models/CreatorForm"; // Import the CreatorForm model
+import CreatorForm from "@/app/models/creatorForm"; // Import the CreatorForm model
 import UserFormResponse from "@/app/models/userFormResponse";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
@@ -20,7 +20,10 @@ export async function GET(
 
     const creatorId = await currentUser();
     if (!creatorId) {
-      return NextResponse.json({ success: false, message: "Unauthorized user" }, { status: 401 });
+      return NextResponse.json(
+        { success: false, message: "Unauthorized user" },
+        { status: 401 }
+      );
     }
 
     const decryptedFormId = decrypt(params.formid);
@@ -28,7 +31,10 @@ export async function GET(
     // Check if the form exists
     const formExists = await CreatorForm.findById(decryptedFormId);
     if (!formExists) {
-      return NextResponse.json({ success: false, message: "Form not found" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "Form not found" },
+        { status: 404 }
+      );
     }
 
     // Fetch the paginated results
@@ -41,14 +47,24 @@ export async function GET(
     console.error(error);
 
     // Check for network-related errors
-    if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED' || error.code === 'EAI_AGAIN') {
+    if (
+      error.code === "ENOTFOUND" ||
+      error.code === "ECONNREFUSED" ||
+      error.code === "EAI_AGAIN"
+    ) {
       return NextResponse.json(
-        { success: false, message: "Network error, please check your connection." },
+        {
+          success: false,
+          message: "Network error, please check your connection.",
+        },
         { status: 503 }
       );
     }
 
     // Handle any other errors
-    return NextResponse.json({ success: false, message: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Something went wrong" },
+      { status: 500 }
+    );
   }
 }

@@ -5,7 +5,7 @@ import * as XLSX from "xlsx";
 import cloudinary from "cloudinary";
 import { Readable } from "stream";
 import { decrypt } from "@/app/lib/crypto";
-import CreatorForm from "@/app/models/CreatorForm"; // Import CreatorForm to validate form existence
+import CreatorForm from "@/app/models/creatorForm"; // Import CreatorForm to validate form existence
 import { clerkClient } from "@clerk/nextjs/server";
 
 // Configure Cloudinary
