@@ -233,59 +233,108 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer id="footer" className="bg-gray-900 py-8">
+      <footer id="footer" className="bg-gray-900 py-12">
         <div className="container mx-auto px-4 sm:px-6 text-center text-white">
-          <p>
+          <p className="mb-8">
             &copy; {new Date().getFullYear()} FillUp.io. All rights reserved.
           </p>
-          <div className="flex justify-center space-x-6 mt-4">
-            <a
-              href="https://twitter.com/yourprofile"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaTwitter className="text-white text-2xl hover:text-gray-400" />
-            </a>
 
-            <a
-              href="https://linkedin.com/in/yourprofile"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaLinkedin className="text-white text-2xl hover:text-gray-400" />
-            </a>
+          <div className="flex flex-col md:flex-row justify-around space-y-8 md:space-y-0 md:space-x-10">
+            {/* Developer 1 - Aryan */}
+            <div className="relative w-full max-w-sm bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+              <h3 className="mt-6 text-xl font-semibold">Aryan Belle</h3>
+              <p className="text-gray-400 mb-4">Full Stack Developer</p>
 
-            <a
-              href="https://github.com/yourprofile"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaGithub className="text-white text-2xl hover:text-gray-400" />
-            </a>
-          </div>
-          <div className="mt-4">
-            <p className="flex items-center justify-center space-x-2">
-              <FaPhone className="text-white" />
-              <span>+1 (123) 456-7890</span>
-            </p>
-            <p className="flex items-center justify-center space-x-2 mt-2">
-              <FaEnvelope className="text-white" />
-              <a
-                href="mailto:aryanbelle692@gmail.com"
-                className="hover:underline"
-              >
-                aryanbelle692@gmail.com
-              </a>
-            </p>
-            <p className="flex items-center justify-center space-x-2 mt-2">
-              <FaEnvelope className="text-white" />
-              <a
-                href="mailto:sanketkore960@gmail.com"
-                className="hover:underline"
-              >
-                sanketkore960@gmail.com
-              </a>
-            </p>
+              <div className="flex justify-center space-x-6 mb-4">
+                <a
+                  href="https://twitter.com/@aryan27361"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaTwitter className="text-white text-2xl hover:text-gray-400" />
+                </a>
+
+                <a
+                  href="https://linkedin.com/in/aryan-belle-2564b2261/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaLinkedin className="text-white text-2xl hover:text-gray-400" />
+                </a>
+
+                <a
+                  href="https://github.com/aryanbelle"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaGithub className="text-white text-2xl hover:text-gray-400" />
+                </a>
+              </div>
+
+              <div className="mt-4">
+                <p className="flex items-center justify-center space-x-2">
+                  <FaPhone className="text-white" />
+                  <span>+919019816164</span>
+                </p>
+                <p className="flex items-center justify-center space-x-2 mt-2">
+                  <FaEnvelope className="text-white" />
+                  <a
+                    href="mailto:aryanbelle692@gmail.com"
+                    className="hover:underline"
+                  >
+                    aryanbelle692@gmail.com
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            {/* Developer 2 - Sanket */}
+            <div className="relative w-full max-w-sm bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+              <h3 className="mt-6 text-xl font-semibold">Sanket Kore</h3>
+              <p className="text-gray-400 mb-4">Full Stack Developer</p>
+
+              <div className="flex justify-center space-x-6 mb-4">
+                <a
+                  href="https://twitter.com/_sanketonline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaTwitter className="text-white text-2xl hover:text-gray-400" />
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/in/sanket-kore-a5147a267/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaLinkedin className="text-white text-2xl hover:text-gray-400" />
+                </a>
+
+                <a
+                  href="https://github.com/sanketkore777"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaGithub className="text-white text-2xl hover:text-gray-400" />
+                </a>
+              </div>
+
+              <div className="mt-4">
+                <p className="flex items-center justify-center space-x-2">
+                  <FaPhone className="text-white" />
+                  <span>+919322173805</span>
+                </p>
+                <p className="flex items-center justify-center space-x-2 mt-2">
+                  <FaEnvelope className="text-white" />
+                  <a
+                    href="mailto:sanketkore960@gmail.com"
+                    className="hover:underline"
+                  >
+                    sanketkore960@gmail.com
+                  </a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
