@@ -6,6 +6,7 @@ import { Button, Input } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import NotFound from "@/app/not-found";
 import Link from "next/link";
+import NoDataPlaceholder from "@/app/components/NoDataplaceholder";
 
 const Page = ({ params }: { params: { id: String } }) => {
   const [formResponse, setFormResponse] = useState([]);
@@ -48,11 +49,11 @@ const Page = ({ params }: { params: { id: String } }) => {
 
   if (formResponse.length) {
     return (
-      <div className="mainclass w-full min-h-screen bg-[f8f8ff] flex flex-col items-center py-8 px-4">
-        <h2 className="text-  xl font-semibold mb-4 text-slate-800 drop-shadow-lg">
+      <div className="mainclass w-full min-h-screen bg-gray-100 flex flex-col items-center p-4">
+        <h2 className="text-xl font-semibold mb-4 text-slate-800 drop-shadow-lg">
           {formResponse[0]?.title}
         </h2>
-        <p className="mb-6 text-slate-600 text-opacity-90">
+        <p className="mb-6 text-slate-600 text-large text-opacity-90">
           {formResponse[0]?.description}
         </p>
         <Button
@@ -61,7 +62,7 @@ const Page = ({ params }: { params: { id: String } }) => {
           className="mb-6  hover:bg-blue-100 transition duration-300"
         >
           {sheet ? (
-            <Link href={sheet}>Download Responses as Excel</Link>
+            <Link href={sheet}>Download Responses in Excel</Link>
           ) : (
             "Loading..."
           )}
@@ -69,16 +70,17 @@ const Page = ({ params }: { params: { id: String } }) => {
         {formResponse.map((form) => (
           <div
             key={form._id}
-            className="w-full lg:max-w-[560px] p-6 mb-8 bg-white shadow-2xl rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg"
+            className="w-full lg:max-w-3xl p-6 mb-8 bg-white shadow-2xl rounded-lg transition-transform transform  hover:shadow-lg"
           >
             {form.questions.map((question, index) => (
               <div key={question._id} className="mb-4">
-                <p className=" text-gray-700 text-lg">
+                <p className=" text-gray-700 text-medium">
                   {index + 1}. {question.question}
                 </p>
                 {question.answer_type !== "file" ? (
                   <Input
                     size="md"
+                    radius="none"
                     readOnly
                     className="text-lg italic w-full rounded-none text-gray-900 border-gray-300 focus:border-blue-500 transition duration-200"
                     value={
@@ -102,7 +104,11 @@ const Page = ({ params }: { params: { id: String } }) => {
       </div>
     );
   } else {
-    <NotFound />;
+    return (
+      <div className="flex flex-col min-h-[94vh] justify-center items-center bg-gray-100">
+        <NoDataPlaceholder DATA={"Responses"} />
+      </div>
+    );
   }
 };
 

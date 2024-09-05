@@ -144,14 +144,17 @@ const Form = ({ id }) => {
   }
 
   return (
-    <div className="max-w-2xl flex flex-col justify-center mx-auto p-4 text-gray-800 bg-white shadow-md rounded-lg">
+    <div className="max-w-3xl flex flex-col justify-center mx-auto p-4 text-gray-800 bg-white shadow-md rounded-lg">
       <h1 className="text-2xl font-semibold mb-3">{formData.title}</h1>
-      <p className="mb-3">{formData.description}</p>
+      <p className="mb-3 text-lg">{formData.description}</p>
       <form onSubmit={(event) => mainHandleSubmit(event)}>
         {formData.questions.map((question, index) => (
-          <div key={question._id} className="mb-4">
-            <label className="block mb-2 text-lg ">
-              {question.text}{" "}
+          <div
+            key={question._id}
+            className="p-3 my-2.5 border-1 border-gray-300"
+          >
+            <label className="block mb-2 text-medium ">
+              {`${index + 1}. ${question.text}`}{" "}
               {question.isRequired && <span className="text-red-500">*</span>}
             </label>
             {question.type === "text" && (
@@ -164,7 +167,7 @@ const Form = ({ id }) => {
                 onChange={(e) =>
                   handleInputChange(index, e.target.value, false)
                 }
-                className="w-full p-2  rounded"
+                className="w-full p-2 rounded"
               />
             )}
             {question.type === "number" && (
@@ -206,9 +209,9 @@ const Form = ({ id }) => {
               <div className="">
                 {question.options.map((option, oIndex) => (
                   <div key={oIndex} className="mb-2 ">
-                    <label className="inline-flex items-center">
+                    <label className="flex items-center">
                       <Input
-                        className=" form-radio w-full border-1 border-[#ccc] max-w-4xl"
+                        className="form-radio w-fit border-1 border-[#ccc]"
                         radius="none"
                         type="radio"
                         name={`question_${index}`}
@@ -219,7 +222,7 @@ const Form = ({ id }) => {
                           handleInputChange(index, e.target.value, false)
                         }
                       />
-                      <span className="ml-2">{option}</span>
+                      <span className="ml-2 text-medium">{option}</span>
                     </label>
                   </div>
                 ))}
@@ -229,9 +232,9 @@ const Form = ({ id }) => {
               <div className="">
                 {question.options.map((option, oIndex) => (
                   <div key={oIndex} className="mb-2">
-                    <label className="inline-flex items-center">
+                    <label className="flex items-center text-medium">
                       <Input
-                        className="w-10 border-1 border-[#ccc] "
+                        className="w-fit border-1 border-[#ccc]"
                         type="checkbox"
                         radius="none"
                         name={`question_${index}`}
@@ -241,7 +244,7 @@ const Form = ({ id }) => {
                           handleInputChange(index, null, true, option)
                         }
                       />
-                      <span className="ml-2">{option}</span>
+                      <span className="ml-2 text-medium">{option}</span>
                     </label>
                   </div>
                 ))}

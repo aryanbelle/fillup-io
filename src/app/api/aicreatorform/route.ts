@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     const data = JSON.parse(text);
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.log("Error:", error.code);
+    console.log("Error:", error);
     return NextResponse.json({ success: false, error: error.message });
   }
 }
