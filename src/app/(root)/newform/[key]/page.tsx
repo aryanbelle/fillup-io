@@ -17,20 +17,17 @@ const Page = async ({ params }: { params: { key: string } }) => {
 
     return (
       <div className="flex flex-col items-center gap-6 p-6 max-w-3xl mx-auto">
-        <h2 className="text-3xl font-semibold text-center">Templates</h2>
         <div className="w-full bg-white p-6 shadow-md rounded-lg">
           <CreatorForm
-            props={{
-              title: data.title,
-              description: data.description,
-              questions: data.questions.map((que) => ({
-                type: que.type,
-                text: que.text,
-                options: [...que?.options],
-                isRequired: que.isRequired,
-              })),
-              isFile: false,
-            }}
+            title={data.title}
+            description={data.description}
+            questions={data.questions.map((que) => ({
+              type: que.type,
+              text: que.text,
+              options: [...(que?.options || [])],
+              isRequired: que.isRequired,
+            }))}
+            isFile={false}
           />
         </div>
       </div>

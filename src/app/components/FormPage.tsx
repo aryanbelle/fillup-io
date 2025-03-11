@@ -1,13 +1,15 @@
 "use client";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { HiOutlineClipboardCheck, HiOutlineDocumentText } from "react-icons/hi";
 
 const Form = ({ id }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -18,7 +20,6 @@ const Form = ({ id }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/userform/${id}`);
-        console.log(response, "fetching");
         if (response.data.data) {
           const _formData = response.data.data;
           setFormData({
@@ -29,12 +30,14 @@ const Form = ({ id }) => {
               answer: ques.type === "checkbox" || "radio" ? [] : "",
             })),
           });
-          setIsLoading(false);
         } else {
-          alert("Request failed, try refreshing page!");
+          toast.error("Failed to load form. Please try refreshing the page.");
         }
       } catch (error) {
         console.error("Error fetching form data:", error);
+        toast.error("Failed to load form. Please try refreshing the page.");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -67,7 +70,6 @@ const Form = ({ id }) => {
 
   const uploadFormResponse = async (_data) => {
     try {
-      console.log(_data);
       const serverFormData = {
         title: _data?.title,
         description: _data?.description,
@@ -81,11 +83,11 @@ const Form = ({ id }) => {
         `/api/submituserform/${id}`,
         serverFormData
       );
-      console.log(response, "UPLOAD RESPONSE....");
       return response;
     } catch (error) {
-      console.log(error, "ERRRRRRROR");
-      toast.error(error.message);
+      console.error("Error uploading form response:", error);
+      toast.error(error.message || "Failed to submit form");
+      throw error;
     }
   };
 
@@ -97,7 +99,6 @@ const Form = ({ id }) => {
             const _formData = new FormData();
             _formData.append("file", que.answer);
             const response = await axios.post("/api/getfile", _formData);
-            console.log(response, "RESPONSE FROM HANDLESUBMIT");
             if (response.data?.url) {
               return { ...que, answer: response.data.url }; // Update answer with the file URL
             } else {
@@ -111,155 +112,185 @@ const Form = ({ id }) => {
 
       return { ...formData, questions: updatedQuestions };
     } catch (error) {
-      setIsLoading(false);
-      toast.error("Something went wrong!");
       console.error("Error submitting form:", error);
       throw error; // Re-throw the error so it can be caught in mainHandleSubmit
     }
   };
 
   async function mainHandleSubmit(event) {
-    console.log(
-      formData,
-      "FORMDATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    );
     event.preventDefault();
-    setIsLoading(true);
+    setSubmitting(true);
     try {
       const _data = await handleSubmit(); // Wait for handleSubmit to complete
       const response = await uploadFormResponse(_data); // Pass the updated data to uploadFormResponse
-      console.log(response, "RESPONSE..............");
       if (response?.data?.success) {
-        toast.success("Form Submited!");
+        toast.success("Form submitted successfully!");
         router.push("/dashboard");
       } else {
-        toast.error(response?.data.message);
+        toast.error(response?.data.message || "Failed to submit form");
       }
     } catch (error) {
-      console.log(error, "ERROR IN MAIN HANDLESUBMIT");
+      console.error("Error in form submission:", error);
       toast.error("Something went wrong during submission!");
     } finally {
-      setIsLoading(false);
+      setSubmitting(false);
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="max-w-3xl mx-auto flex flex-col items-center justify-center p-8 min-h-[60vh]">
+        <Spinner size="lg" color="primary" />
+        <p className="mt-4 text-gray-600">Loading form...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-3xl flex flex-col justify-center mx-auto p-4 text-gray-800 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-semibold mb-3">{formData.title}</h1>
-      <p className="mb-3 text-lg">{formData.description}</p>
-      <form onSubmit={(event) => mainHandleSubmit(event)}>
-        {formData.questions.map((question, index) => (
-          <div
-            key={question._id}
-            className="p-3 my-2.5 border-1 border-gray-300"
-          >
-            <label className="block mb-2 text-medium ">
-              {`${index + 1}. ${question.text}`}{" "}
-              {question.isRequired && <span className="text-red-500">*</span>}
-            </label>
-            {question.type === "text" && (
-              <Input
-                className="w-full border-1 border-[#ccc] max-w-4xl"
-                radius="none"
-                type="text"
-                required={question.isRequired}
-                value={question.answer}
-                onChange={(e) =>
-                  handleInputChange(index, e.target.value, false)
-                }
-                className="w-full p-2 rounded"
-              />
-            )}
-            {question.type === "number" && (
-              <Input
-                className="w-full border-1 border-[#ccc] max-w-4xl"
-                radius="none"
-                type="number"
-                required={question.isRequired}
-                value={question.answer}
-                onChange={(e) =>
-                  handleInputChange(index, e.target.value, false)
-                }
-              />
-            )}
-            {question.type === "date" && (
-              <Input
-                className="w-full border-1 border-[#ccc] max-w-4xl"
-                radius="none"
-                type="date"
-                required={question.isRequired}
-                value={question.answer}
-                onChange={(e) =>
-                  handleInputChange(index, e.target.value, false)
-                }
-              />
-            )}
-            {question.type === "file" && (
-              <Input
-                className="w-full border-1 border-[#ccc] max-w-4xl"
-                radius="none"
-                type="file"
-                required={question.isRequired}
-                onChange={(e) =>
-                  handleInputChange(index, e.target.files, false)
-                }
-              />
-            )}
-            {question.type === "radio" && (
-              <div className="">
-                {question.options.map((option, oIndex) => (
-                  <div key={oIndex} className="mb-2 ">
-                    <label className="flex items-center">
-                      <Input
-                        className="form-radio w-fit border-1 border-[#ccc]"
-                        radius="none"
+    <div className="max-w-3xl mx-auto bg-white shadow-sm rounded-xl overflow-hidden">
+      {/* Form Header */}
+      <div className="bg-blue-50 p-6 border-b border-blue-100">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-blue-600 p-2 rounded-lg">
+            <HiOutlineClipboardCheck className="h-6 w-6 text-white" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-800">{formData.title}</h1>
+        </div>
+        <p className="text-gray-600">{formData.description}</p>
+      </div>
+
+      {/* Form Body */}
+      <form onSubmit={(event) => mainHandleSubmit(event)} className="p-6">
+        <div className="space-y-6">
+          {formData.questions.map((question, index) => (
+            <div
+              key={question._id}
+              className="p-5 border border-gray-200 rounded-lg hover:border-blue-200 transition-all"
+            >
+              <label className="block mb-3 text-gray-800 font-medium">
+                {`${index + 1}. ${question.text}`}{" "}
+                {question.isRequired && <span className="text-red-500">*</span>}
+              </label>
+              
+              {question.type === "text" && (
+                <Input
+                  className="w-full"
+                  variant="bordered"
+                  type="text"
+                  required={question.isRequired}
+                  value={question.answer}
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.value, false, null)
+                  }
+                  placeholder="Your answer"
+                />
+              )}
+              
+              {question.type === "number" && (
+                <Input
+                  className="w-full"
+                  variant="bordered"
+                  type="number"
+                  required={question.isRequired}
+                  value={question.answer}
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.value, false, null)
+                  }
+                  placeholder="Your answer"
+                />
+              )}
+              
+              {question.type === "date" && (
+                <Input
+                  className="w-full"
+                  variant="bordered"
+                  type="date"
+                  required={question.isRequired}
+                  value={question.answer}
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.value, false, null)
+                  }
+                />
+              )}
+              
+              {question.type === "file" && (
+                <Input
+                  className="w-full"
+                  variant="bordered"
+                  type="file"
+                  required={question.isRequired}
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.files, false, null)
+                  }
+                />
+              )}
+              
+              {question.type === "radio" && (
+                <div className="space-y-2 mt-2">
+                  {question.options.map((option, oIndex) => (
+                    <div key={oIndex} className="flex items-center">
+                      <input
+                        className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                         type="radio"
+                        id={`question_${index}_option_${oIndex}`}
                         name={`question_${index}`}
                         value={option}
                         checked={question.answer[0] === option}
                         required={question.isRequired}
                         onChange={(e) =>
-                          handleInputChange(index, e.target.value, false)
+                          handleInputChange(index, e.target.value, false, null)
                         }
                       />
-                      <span className="ml-2 text-medium">{option}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            )}
-            {question.type === "checkbox" && (
-              <div className="">
-                {question.options.map((option, oIndex) => (
-                  <div key={oIndex} className="mb-2">
-                    <label className="flex items-center text-medium">
-                      <Input
-                        className="w-fit border-1 border-[#ccc]"
+                      <label 
+                        htmlFor={`question_${index}_option_${oIndex}`}
+                        className="ml-2 text-gray-700"
+                      >
+                        {option}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {question.type === "checkbox" && (
+                <div className="space-y-2 mt-2">
+                  {question.options.map((option, oIndex) => (
+                    <div key={oIndex} className="flex items-center">
+                      <input
+                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                         type="checkbox"
-                        radius="none"
+                        id={`question_${index}_option_${oIndex}`}
                         name={`question_${index}`}
                         value={option}
                         checked={question.answer.includes(option)}
-                        onChange={() =>
+                        onChange={(e) =>
                           handleInputChange(index, null, true, option)
                         }
                       />
-                      <span className="ml-2 text-medium">{option}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-        <Button
-          type="submit"
-          variant="shadow"
-          className="w-full p-2 bg-blue-500 text-white font-semibold rounded"
-          isLoading={isLoading}
-        >
-          {isLoading ? "Hang tight" : "Submit"}
-        </Button>
+                      <label 
+                        htmlFor={`question_${index}_option_${oIndex}`}
+                        className="ml-2 text-gray-700"
+                      >
+                        {option}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-8">
+          <Button
+            type="submit"
+            className="w-[20%] float-right mb-8 py-6 bg-blue-600 text-white"
+            isLoading={submitting}
+            size="lg"
+          >
+            {submitting ? "Submitting..." : "Submit"}
+          </Button>
+        </div>
       </form>
     </div>
   );

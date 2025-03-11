@@ -12,6 +12,7 @@ import {
   FaPhone,
   FaEnvelope,
 } from "react-icons/fa";
+
 export default function HomePage() {
   return (
     <div className="bg-white text-gray-800">
@@ -48,27 +49,30 @@ export default function HomePage() {
           </motion.h1>
           <motion.p
             className="text-lg sm:text-xl md:text-2xl mb-8"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-          >
-            Create, share, and analyze surveys effortlessly.
-            <br />
-            Perfect for collecting feedback, conducting research, or organizing
-            events.
-          </motion.p>
-          <motion.div
-            className="flex flex-col sm:flex-row justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            <button className="bg-blue-500 hover:bg-blue-700 text-white py-3 px-8 rounded-full text-lg shadow-xl transform hover:scale-105 transition-all duration-300">
-              <a href="/signin">Get Started</a>
-            </button>
-            <button className="bg-gray-100 hover:bg-gray-300 text-gray-900 py-3 px-8 rounded-full text-lg shadow-xl transform hover:scale-105 transition-all duration-300">
-              <a href="/#features">Explore Features</a>
-            </button>
+            Create beautiful forms in seconds with AI
+          </motion.p>
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.8 }}
+          >
+            <a
+              href="/signup"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 text-center"
+            >
+              Get Started
+            </a>
+            <a
+              href="#features"
+              className="bg-white hover:bg-gray-100 text-blue-600 font-semibold py-3 px-8 rounded-full shadow-lg border border-blue-200 transition duration-300 text-center"
+            >
+              Learn More
+            </a>
           </motion.div>
         </div>
       </section>
@@ -151,7 +155,7 @@ export default function HomePage() {
               </h3>
               <p className="text-sm sm:text-base text-gray-600">
                 Choose from a variety of templates and customize them to reflect
-                your brand’s identity.
+                your brand&apos;s identity.
               </p>
             </motion.div>
           </div>

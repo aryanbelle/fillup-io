@@ -6,7 +6,7 @@ const page = async ({ params }: { params: { id: String } }) => {
   const user = await currentUser();
   if (!user) redirect("/");
   return (
-    <div className="w-full h-full bg-gray-100 p-3">
+    <div className="w-full min-h-screen bg-[#f9fafb] py-8 px-4">
       <FormPage id={params.id} />
     </div>
   );

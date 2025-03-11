@@ -12,9 +12,10 @@ export async function GET(
   try {
     await dbConnect();
 
-    // Parsing the request body to get pageNo
-    const { pageNo } = await request.json().catch(() => ({ pageNo: 0 }));
-    const page = parseInt(pageNo, 10) || 0;
+    // Get page from URL query params instead of body
+    const url = new URL(request.url);
+    const pageParam = url.searchParams.get('page');
+    const page = pageParam ? parseInt(pageParam, 10) : 0;
     const limit = 10;
     const start = page * limit;
 

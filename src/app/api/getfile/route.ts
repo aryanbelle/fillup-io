@@ -9,6 +9,11 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Define a custom type that extends Blob to include the name property
+interface FileWithName extends Blob {
+  name: string;
+}
+
 function streamUpload(buffer: Buffer, fileName: string): Promise<cloudinary.UploadApiResponse | undefined> {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.v2.uploader.upload_stream(
@@ -31,7 +36,7 @@ function streamUpload(buffer: Buffer, fileName: string): Promise<cloudinary.Uplo
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const formData = await request.formData();
-    const file = formData.get("file") as Blob | null;
+    const file = formData.get("file") as FileWithName | null;
 
     if (!file) {
       return NextResponse.json({ success: false, error: "No file provided" }, { status: 400 });

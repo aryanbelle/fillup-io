@@ -1,10 +1,14 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import HomePage from "@/app/components/HomePage";
-import Loader from "../components/Loader";
-export default async function Home() {
+
+export default async function RootPage() {
   const user = await currentUser();
-  if (user) {
-    redirect("/dashboard");
-  } else return <HomePage />;
+  
+  // If user is not signed in, redirect to the main page
+  if (!user) {
+    redirect("/");
+  }
+  
+  // If user is signed in, redirect to the dashboard
+  redirect("/dashboard");
 }

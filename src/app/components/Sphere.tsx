@@ -1,3 +1,4 @@
+"use client";
 // components/AILoading.js
 
 import Link from "next/link";
